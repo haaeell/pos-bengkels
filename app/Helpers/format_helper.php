@@ -17,7 +17,7 @@ if (!function_exists('clearRupiah')) {
 }
 
 if (!function_exists('formatTanggal')) {
-    function formatTanggal($tanggal, $format = 'd-m-Y')
+    function formatTanggal($tanggal, $format = 'd F Y')
     {
         return Carbon::parse($tanggal)->format($format);
     }

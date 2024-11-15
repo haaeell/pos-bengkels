@@ -41,50 +41,56 @@
                                 <span class="hide-menu">Dashboard</span>
                             </a>
                         </li>
-                        <li>
-                            <span class="sidebar-divider lg"></span>
-                        </li>
-                        <li class="nav-small-cap">
-                            <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
-                            <span class="hide-menu">DATA MASTER</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
-                                <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
-                                <span class="hide-menu">Data Barang</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
-                                <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
-                                <span class="hide-menu">Barang Masuk</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
-                                <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
-                                <span class="hide-menu">Supplier</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
-                                <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
-                                <span class="hide-menu">Pelanggan</span>
-                            </a>
-                        </li>
-                        <li>
-                            <span class="sidebar-divider lg"></span>
-                        </li>
-                        <li class="nav-small-cap">
-                            <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
-                            <span class="hide-menu">POINT OF SALES</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="/pos" aria-expanded="false">
-                                <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
-                                <span class="hide-menu">POS</span>
-                            </a>
-                        </li>
+                        @if (Auth::user()->isAdmin())
+                            <li>
+                                <span class="sidebar-divider lg"></span>
+                            </li>
+                            <li class="nav-small-cap">
+                                <iconify-icon icon="solar:menu-dots-linear"
+                                    class="nav-small-cap-icon fs-4"></iconify-icon>
+                                <span class="hide-menu">DATA MASTER</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('products.index') }}" aria-expanded="false">
+                                    <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
+                                    <span class="hide-menu">Data Barang</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+                                    <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
+                                    <span class="hide-menu">Barang Masuk</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+                                    <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
+                                    <span class="hide-menu">Supplier</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+                                    <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
+                                    <span class="hide-menu">Pelanggan</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (Auth::user()->isCashier())
+                            <li class="nav-small-cap">
+                                <iconify-icon icon="solar:menu-dots-linear"
+                                    class="nav-small-cap-icon fs-4"></iconify-icon>
+                                <span class="hide-menu">POINT OF SALES</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/pos" aria-expanded="false">
+                                    <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
+                                    <span class="hide-menu">POS</span>
+                                </a>
+                            </li>
+                        @endif
+
+
                         <li>
                             <span class="sidebar-divider lg"></span>
                         </li>
@@ -93,7 +99,7 @@
                             <span class="hide-menu">LAPORAN</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+                            <a class="sidebar-link" href="/transaksi-harian" aria-expanded="false">
                                 <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
                                 <span class="hide-menu">Transaksi Harian</span>
                             </a>
@@ -110,6 +116,7 @@
                                 <span class="hide-menu">Transaksi Bulanan</span>
                             </a>
                         </li>
+
 
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -157,7 +164,11 @@
                                             <p class="mb-0 fs-3">My Account</p>
                                         </a>
                                         <a href="./authentication-login.html"
-                                            class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                            class="btn btn-outline-primary mx-3 mt-2 d-block" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            class="d-none">
+                                            @csrf
+                                        </form>
                                     </div>
                                 </div>
                             </li>
@@ -190,7 +201,50 @@
     <script></script>
     <!-- solar icons -->
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#datatables').DataTable();
+        });
+    </script>
+    @if ($errors->any())
+        <script>
+            let errorMessages = '';
+            @foreach ($errors->all() as $error)
+                errorMessages += "{{ $error }}\n";
+            @endforeach
 
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: errorMessages,
+            });
+        </script>
+    @endif
+
+    @if (session('success') || session('error'))
+        <script>
+            $(document).ready(function() {
+                var successMessage = "{{ session('success') }}";
+                var errorMessage = "{{ session('error') }}";
+
+                if (successMessage) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: successMessage,
+                    });
+                }
+
+                if (errorMessage) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMessage,
+                    });
+                }
+            });
+        </script>
+    @endif
     @yield('scripts')
 </body>
 

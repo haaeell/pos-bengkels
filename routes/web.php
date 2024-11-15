@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\riwayatTransaksiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +24,10 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::resource('pos', PosController::class);
+    Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
+    Route::post('/pos/store', [PosController::class, 'store'])->name('pos.store');
+    Route::resource('products', ProductController::class);
+    Route::get('/transaksi-harian', [riwayatTransaksiController::class, 'dailyTransactions'])->name('transaksi.harian');
 });
 
 Auth::routes();

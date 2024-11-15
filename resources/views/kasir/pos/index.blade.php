@@ -30,26 +30,21 @@
                         @endfor
                     </div>
                     <div class="row d-flex p-3" id="product-list">
-                        @for ($i = 0; $i < 30; $i++)
-                            <div class="col-lg-3 col-md-4 col-sm-6 card-product" data-category="{{ rand(0, 4) }}"
-                                style="cursor: pointer;" data-price="{{ rand(10000, 99909) }}">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center gap-1">
-                                        <div
-                                            class="rounded-circle-shape bg-light me-3 rounded-pill d-inline-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:card-line-duotone"
-                                                class="fs-7 text-primary"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1">Produk {{ $i }}</h6>
-                                            <p class="mb-0 d-flex align-items-center gap-1">
-                                                {{ formatRupiah(rand(10000, 99909)) }}<i class="ti ti-info-circle"></i>
-                                            </p>
-                                        </div>
-                                    </div>
+                        @foreach ($products as $product)
+                            <div class="col-lg-3 col-md-4 col-sm-6 card-product m-2"
+                                data-category="{{ $product->description }}" data-id="{{ $product->id }}"
+                                style="cursor: pointer;" data-price="{{ $product->price }}">
+                                <div class="my-3 text-center">
+                                    <img src="{{ asset($product->image) }}"
+                                        style="width: 50px;height: 50px; object-fit: cover; border-radius: 50%;"
+                                        alt="{{ $product->name }}">
+                                    <h5 class="mt-3 mb-0">Produk {{ $product->name }}</h5>
+                                    <p class="mb-0 text-danger">
+                                        {{ formatRupiah($product->price) }}
+                                    </p>
                                 </div>
                             </div>
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -70,6 +65,7 @@
                                     <th>Produk</th>
                                     <th>Jumlah</th>
                                     <th>Harga</th>
+                                    <th>Total</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -126,27 +122,30 @@
         $(document).ready(function() {
             $('.card-product').on('click', function() {
                 const productPrice = $(this).data('price');
-                const productName = $(this).find('h6').text();
+                const productName = $(this).find('h5').text();
+                const productId = $(this).data('id');
                 const existingRow = $('#cart-items').find(`tr:contains(${productName})`);
 
                 if (existingRow.length) {
                     const quantity = existingRow.find('span');
                     quantity.text(parseInt(quantity.text()) + 1);
+                    updateRowTotal(existingRow, productPrice);
                 } else {
                     $('#cart-items').append(`
-                        <tr>
-                            <td>${productName}</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <button class="btn btn-outline-secondary btn-sm decrease">-</button>
-                                    <span class="mx-2">1</span>
-                                    <button class="btn btn-outline-secondary btn-sm increase">+</button>
-                                </div>
-                            </td>
-                            <td>${formatRupiah(productPrice)}</td>
-                            <td><button class="btn btn-danger btn-sm remove">Hapus</button></td>
-                        </tr>
-                    `);
+                <tr data-id="${productId}">
+                    <td>${productName}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-outline-secondary btn-sm decrease">-</button>
+                            <span class="mx-2">1</span>
+                            <button class="btn btn-outline-secondary btn-sm increase">+</button>
+                        </div>
+                    </td>
+                    <td>${formatRupiah(productPrice)}</td>
+                    <td>${formatRupiah(productPrice)}</td>
+                    <td><button class="btn btn-danger btn-sm remove">Hapus</button></td>
+                </tr>
+            `);
                 }
                 updateTotal();
                 $('.card-product').removeClass('active');
@@ -154,16 +153,22 @@
             });
 
             $('#cart-items').on('click', '.increase', function() {
+                const row = $(this).closest('tr');
                 const quantity = $(this).siblings('span');
                 quantity.text(parseInt(quantity.text()) + 1);
+                const price = parseFloat(row.find('td:nth-child(3)').text().replace(/[^\d]/g, ''));
+                updateRowTotal(row, price);
                 updateTotal();
             });
 
             $('#cart-items').on('click', '.decrease', function() {
+                const row = $(this).closest('tr');
                 const quantity = $(this).siblings('span');
                 const newQuantity = parseInt(quantity.text()) - 1;
                 if (newQuantity >= 1) {
                     quantity.text(newQuantity);
+                    const price = parseFloat(row.find('td:nth-child(3)').text().replace(/[^\d]/g, ''));
+                    updateRowTotal(row, price);
                     updateTotal();
                 }
             });
@@ -173,12 +178,18 @@
                 updateTotal();
             });
 
+            function updateRowTotal(row, unitPrice) {
+                const quantity = parseInt(row.find('span').text());
+                const totalPrice = unitPrice * quantity;
+                row.find('td:nth-child(4)').text(formatRupiah(totalPrice));
+            }
+
             function updateTotal() {
                 let total = 0;
                 $('#cart-items tr').each(function() {
-                    const price = parseFloat($(this).find('td:nth-child(3)').text().replace(/[^\d]/g, ''));
-                    const quantity = parseInt($(this).find('span').text());
-                    total += price * quantity;
+                    const totalPrice = parseFloat($(this).find('td:nth-child(4)').text().replace(/[^\d]/g,
+                        ''));
+                    total += totalPrice;
                 });
                 $('#total-payment').text(formatRupiah(total));
             }
@@ -221,6 +232,54 @@
             }
 
             $('#pay-button').on('click', function() {
+                const customerName = $('#customer-name').val();
+                if (!customerName) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Nama pelanggan harus diisi!",
+                        icon: "error"
+                    });
+                    return;
+                }
+
+                const paymentMethod = $('input[name="payment-method"]:checked').val();
+                if (!paymentMethod) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Pilih metode pembayaran!",
+                        icon: "error"
+                    });
+                    return;
+                }
+
+                const cartItems = [];
+                let totalAmount = 0;
+
+                $('#cart-items tr').each(function() {
+                    const productName = $(this).find('td:first').text();
+                    const quantity = parseInt($(this).find('span').text());
+                    const price = parseFloat($(this).find('td:nth-child(3)').text().replace(
+                        /[^\d]/g, ''));
+                    const total = price * quantity;
+                    const productId = $(this).data('id');
+
+                    cartItems.push({
+                        product_id: productId,
+                        quantity: quantity,
+                        price: price
+                    });
+
+                    totalAmount += total;
+                });
+
+                const transactionData = {
+                    customer_name: customerName,
+                    payment_method: paymentMethod,
+                    total_amount: totalAmount,
+                    products: cartItems
+                };
+                console.log(transactionData);
+
                 Swal.fire({
                     title: "Apakah Anda yakin?",
                     text: "Proses ini tidak dapat dibatalkan!",
@@ -231,14 +290,152 @@
                     confirmButtonText: "Ya, lanjutkan pembayaran!"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire({
-                            title: "Pembayaran Berhasil!",
-                            text: "Transaksi Anda telah diproses.",
-                            icon: "success"
+                        $.ajax({
+                            url: '/pos/store',
+                            method: 'POST',
+                            data: transactionData,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    title: "Pembayaran Berhasil!",
+                                    text: "Transaksi Anda telah diproses.",
+                                    icon: "success"
+                                }).then(() => {
+                                    printReceipt(response.transaction);
+
+                                    $('#cart-items').empty();
+                                    $('#total-payment').text(formatRupiah(0));
+                                    $('#amount-paid').val('');
+                                    $('#change').text(formatRupiah(0));
+                                    $('#customer-name').val('');
+                                    $('input[name="payment-method"]').prop(
+                                        'checked', false);
+                                });
+                            },
+                            error: function(xhr) {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Terjadi kesalahan saat memproses transaksi.",
+                                    icon: "error"
+                                });
+                            }
                         });
                     }
                 });
             });
+
+            function printReceipt(transaction) {
+
+                const iframe = document.createElement('iframe');
+                iframe.style.position = 'absolute';
+                iframe.style.top = '-10000px'; 
+                document.body.appendChild(iframe);
+
+                const doc = iframe.contentWindow.document;
+                const receiptHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Struk Pembayaran</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                    margin: 0;
+                    padding: 0;
+                }
+                .header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                .header h2 {
+                    margin: 0;
+                    font-size: 16px;
+                }
+                .header p {
+                    margin: 0;
+                }
+                .detail {
+                    margin-bottom: 15px;
+                    padding: 0 10px;
+                }
+                .items {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 15px;
+                }
+                .items th, .items td {
+                    border: 1px solid #ddd;
+                    padding: 5px;
+                    text-align: left;
+                }
+                .items th {
+                    background-color: #f5f5f5;
+                }
+                .total {
+                    text-align: right;
+                    margin: 0 10px;
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 20px;
+                    font-size: 12px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h2>STRUK PEMBAYARAN</h2>
+                <p>Nota: ${transaction.nota_number}</p>
+                <p>Tanggal: ${transaction.transaction_date}</p>
+            </div>
+            <div class="detail">
+                <p><strong>Pelanggan:</strong> ${transaction.customer_name || 'Umum'}</p>
+                <p><strong>Metode Pembayaran:</strong> ${transaction.payment_method}</p>
+            </div>
+            <table class="items">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Qty</th>
+                        <th>Harga</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${transaction.products.map(item => `
+                                <tr>
+                                    <td>${item.product_name}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>${formatRupiah(item.price)}</td>
+                                    <td>${formatRupiah(item.price * item.quantity)}</td>
+                                </tr>
+                            `).join('')}
+                </tbody>
+            </table>
+            <div class="total">
+                Total: ${formatRupiah(transaction.total_amount)}
+            </div>
+            <div class="footer">
+                <p>Terima kasih telah berbelanja</p>
+            </div>
+        </body>
+        </html>
+    `;
+
+                doc.open();
+                doc.write(receiptHTML);
+                doc.close();
+
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+
+                setTimeout(() => document.body.removeChild(iframe), 1000);
+            }
 
 
             $('#cancel-button').on('click', function() {
