@@ -17,18 +17,18 @@
     </style>
 
     <div class="row">
-        <div class="col-lg-8 col-md-7 col-sm-12">
+        <div class="col-lg-6 col-md-7 col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <input type="text" class="form-control mb-3" id="search-product" placeholder="Search for products...">
-                    <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                    <!-- <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
                         @for ($i = 0; $i < 5; $i++)
                             <button class="nav-link {{ $i === 0 ? 'active' : '' }}" id="category-{{ $i }}-tab"
                                 data-bs-toggle="tab" data-bs-target="#nav-category-{{ $i }}" type="button"
                                 role="tab" aria-controls="nav-category-{{ $i }}"
                                 aria-selected="{{ $i === 0 ? 'true' : 'false' }}">Kategori {{ $i }}</button>
                         @endfor
-                    </div>
+                    </div> -->
                     <div class="row d-flex p-3" id="product-list">
                         @foreach ($products as $product)
                             <div class="col-lg-3 col-md-4 col-sm-6 card-product m-2"
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-5 col-sm-12">
+        <div class="col-lg-6 col-md-5 col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
@@ -121,7 +121,7 @@
     <script>
         $(document).ready(function() {
             $('.card-product').on('click', function() {
-                const productPrice = $(this).data('price');
+                const productPrice = parseFloat($(this).data('price'));
                 const productName = $(this).find('h5').text();
                 const productId = $(this).data('id');
                 const existingRow = $('#cart-items').find(`tr:contains(${productName})`);
@@ -201,7 +201,7 @@
             $('#search-product').on('input', function() {
                 const query = $(this).val().toLowerCase();
                 $('#product-list .card-product').each(function() {
-                    const productName = $(this).find('h6').text().toLowerCase();
+                    const productName = $(this).find('h5').text().toLowerCase();
                     $(this).toggle(productName.includes(query));
                 });
             });
