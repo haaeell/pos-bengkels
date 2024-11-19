@@ -39,6 +39,20 @@ class PosController extends Controller
                     'quantity' => $product['quantity'],
                     'price' => $product['price'],
                 ]);
+
+                $currentProduct = Product::findOrFail($product['product_id']);
+
+                if ($currentProduct->quantity < $product['quantity']) {
+                    DB::rollBack();
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => "Stok produk {$currentProduct->name} tidak mencukupi."
+                    ], 400);
+                }
+
+                $currentProduct->update([
+                    'quantity' => $currentProduct->quantity - $product['quantity'],
+                ]);
             }
 
             DB::commit();
