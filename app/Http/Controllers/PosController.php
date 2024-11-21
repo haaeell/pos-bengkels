@@ -15,6 +15,11 @@ class PosController extends Controller
         $products = Product::all();
         return view('kasir.pos.index', compact('products'));
     }
+    public function services()
+    {
+        $products = Product::all();
+        return view('kasir.service.index', compact('products'));
+    }
 
     public function store(Request $request)
     {

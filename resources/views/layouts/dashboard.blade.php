@@ -88,6 +88,12 @@
                                     <span class="hide-menu">POS</span>
                                 </a>
                             </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/services" aria-expanded="false">
+                                    <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
+                                    <span class="hide-menu">SERVICE</span>
+                                </a>
+                            </li>
                         @endif
 
 
@@ -105,19 +111,17 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
-                                <iconify-icon icon="solar:danger-circle-line-duotone"></iconify-icon>
-                                <span class="hide-menu">Transaksi Mingguan</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
+                            <a class="sidebar-link" href="/transaksi-bulanan" aria-expanded="false">
                                 <iconify-icon icon="solar:danger-circle-line-duotone"></iconify-icon>
                                 <span class="hide-menu">Transaksi Bulanan</span>
                             </a>
                         </li>
-
-
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/sales" aria-expanded="false">
+                                <iconify-icon icon="solar:danger-circle-line-duotone"></iconify-icon>
+                                <span class="hide-menu">Data Penjualan</span>
+                            </a>
+                        </li>
                 </nav>
                 <!-- End Sidebar navigation -->
             </div>
@@ -204,6 +208,7 @@
     <script>
         $(document).ready(function() {
             $('#datatables').DataTable();
+            $('#datatables2').DataTable();
         });
     </script>
     @if ($errors->any())

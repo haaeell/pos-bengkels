@@ -26,8 +26,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
     Route::post('/pos/store', [PosController::class, 'store'])->name('pos.store');
+    Route::get('/services', [PosController::class, 'services'])->name('services.index');
+    Route::post('/services/store', [PosController::class, 'servicesStore'])->name('services.store');
     Route::resource('products', ProductController::class);
     Route::get('/transaksi-harian', [riwayatTransaksiController::class, 'dailyTransactions'])->name('transaksi.harian');
+    Route::get('/transaksi-bulanan', [riwayatTransaksiController::class, 'monthlyTransactions'])->name('transaksi.bulanan');
+    Route::get('/sales', [riwayatTransaksiController::class, 'sales'])->name('penjualan');
 });
 
 Auth::routes();
