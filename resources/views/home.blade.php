@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <h4>Dashboard</h4>
             </div>
-    
+
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
@@ -15,7 +15,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div>
-                                            <h4>Total Pendapatan</h4>
+                                            <h4 class="text-center">Total Pendapatan</h4>
+                                            <h6 class="text-center">{{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</h6>
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -43,20 +44,20 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <h5>Stok Hampir Habis</h5>
-                        <table class="table">
-                            <thead>
+                        <table class="table rounded">
+                            <thead class="table-danger">
                                 <tr>
                                     <th>Nama Barang</th>
                                     <th>Sisa Stok</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($stokHampirHabis as $product)
+                                @foreach ($stokHampirHabis as $product)
                                     <tr>
                                         <td>{{ $product->name }}</td>
                                         <td>{{ $product->quantity }}</td>
@@ -64,10 +65,20 @@
                                 @endforeach
                             </tbody>
                         </table>
+
+                        @if ($stokHampirHabis->count() > 0)
+                            <div class="alert alert-warning mt-3" role="alert">
+                                ⚠️ Beberapa barang hampir habis! Segera lakukan restock agar tidak kehabisan stok.
+                            </div>
+                        @else
+                            <div class="alert alert-success mt-3" role="alert">
+                                ✅ Semua stok dalam kondisi aman. Tidak ada barang yang hampir habis.
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
-    
+
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
@@ -85,10 +96,10 @@
         const salesChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: @json($topProducts->pluck('product.name')->toArray()), 
+                labels: @json($topProducts->pluck('product.name')->toArray()),
                 datasets: [{
                     label: 'Penjualan',
-                    data: @json($topProducts->pluck('total_sold')->toArray()), 
+                    data: @json($topProducts->pluck('total_sold')->toArray()),
                     backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
                 }]
             },

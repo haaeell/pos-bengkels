@@ -88,12 +88,12 @@
                                     <span class="hide-menu">POS</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item">
+                            {{-- <li class="sidebar-item">
                                 <a class="sidebar-link" href="/services" aria-expanded="false">
                                     <iconify-icon icon="solar:layers-minimalistic-bold-duotone"></iconify-icon>
                                     <span class="hide-menu">SERVICE</span>
                                 </a>
-                            </li>
+                            </li> --}}
                         @endif
 
 

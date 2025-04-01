@@ -32,7 +32,7 @@
                             <tr>
                                 <td>{{ $transaction->nota_number }}</td>
                                 <td>{{ formatTanggal($transaction->transaction_date) }}</td>
-                                <td>{{ $transaction->payment_method }}</td>
+                                <td><span class="badge bg-{{ $transaction->payment_method == 'cash' ? 'success' : 'warning' }}">{{ $transaction->payment_method == 'cash' ? 'Cash' : 'Transfer' }}</span></td>
                                 <td>{{ formatRupiah($transaction->total_amount) }}</td>
                                 <td>
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
