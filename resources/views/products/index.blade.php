@@ -16,7 +16,7 @@
                             <th>Image</th>
                             <th>Name</th>
                             <th>Satuan</th>
-                            <th>Quantity</th>
+                            {{-- <th>Quantity</th> --}}
                             <th>Price</th>
                             <th>Actions</th>
                         </tr>
@@ -29,7 +29,7 @@
                                 <td><img src="{{ asset($product->image) }}" alt="" width="100px"></td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->satuan }}</td>
-                                <td>{{ $product->quantity }}</td>
+                                {{-- <td>{{ $product->quantity }}</td> --}}
                                 <td>{{ formatRupiah($product->price) }}</td>
                                 <td>
                                     <button class="btn btn-warning" data-bs-toggle="modal"
@@ -81,11 +81,11 @@
                                                                 </option>
                                                             </select>
                                                         </div>
-                                                        <div class="mb-3">
+                                                        {{-- <div class="mb-3">
                                                             <label for="quantity" class="form-label">Quantity</label>
                                                             <input type="number" class="form-control" id="quantity"
                                                                 name="quantity" value="{{ $product->quantity }}" required>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
                                                     <div class="col-md-6">
 
@@ -193,10 +193,10 @@
                                     <input type="text" class="form-control" id="price" name="price" required>
                                 </div>
 
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label for="quantity" class="form-label">Quantity</label>
                                     <input type="number" class="form-control" id="quantity" name="quantity" required>
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Product Image</label>
                                     <input type="file" class="form-control" id="image" name="image"

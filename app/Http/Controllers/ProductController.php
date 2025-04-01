@@ -19,7 +19,6 @@ class ProductController extends Controller
         $request->validate([
             'code' => 'required|unique:products',
             'name' => 'required',
-            'quantity' => 'required',
             'price' => 'required',
             'satuan' => 'required',
             'description' => 'nullable',
@@ -32,7 +31,7 @@ class ProductController extends Controller
         Product::create([
             'code' => $request->code,
             'name' => $request->name,
-            'quantity' => $request->quantity,
+            'quantity' => 0,
             'price' => clearRupiah($request->price),
             'satuan' => $request->satuan,
             'description' => $request->description,
@@ -47,7 +46,6 @@ class ProductController extends Controller
         $request->validate([
             'code' => 'required|unique:products,code,' . $product->id,
             'name' => 'required',
-            'quantity' => 'required',
             'price' => 'required',
             'satuan' => 'required',
             'description' => 'nullable',
@@ -66,7 +64,7 @@ class ProductController extends Controller
         $product->update([
             'code' => $request->code,
             'name' => $request->name,
-            'quantity' => $request->quantity,
+            'quantity' => $product->quantity,
             'price' => clearRupiah($request->price),
             'satuan' => $request->satuan,
             'description' => $request->description,

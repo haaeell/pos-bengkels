@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\riwayatTransaksiController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaksi-harian', [riwayatTransaksiController::class, 'dailyTransactions'])->name('transaksi.harian');
     Route::get('/transaksi-bulanan', [riwayatTransaksiController::class, 'monthlyTransactions'])->name('transaksi.bulanan');
     Route::get('/sales', [riwayatTransaksiController::class, 'sales'])->name('penjualan');
+
+    Route::resource('suppliers', SupplierController::class);
+    Route::resource('barang-masuk', BarangMasukController::class);
 });
 
 Auth::routes();

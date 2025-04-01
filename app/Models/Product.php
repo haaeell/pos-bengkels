@@ -26,4 +26,8 @@ class Product extends Model
             ->withTimestamps();
     }
 
+    public function barangMasuk()
+    {
+        return $this->hasMany(BarangMasuk::class);
+    }
 }

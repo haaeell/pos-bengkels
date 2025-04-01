@@ -21,21 +21,14 @@
         <div class="card">
             <div class="card-body">
                 <input type="text" class="form-control mb-3" id="search-product" placeholder="Search for products...">
-                <!-- <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-                        @for ($i = 0; $i < 5; $i++)
-                            <button class="nav-link {{ $i === 0 ? 'active' : '' }}" id="category-{{ $i }}-tab"
-                                data-bs-toggle="tab" data-bs-target="#nav-category-{{ $i }}" type="button"
-                                role="tab" aria-controls="nav-category-{{ $i }}"
-                                aria-selected="{{ $i === 0 ? 'true' : 'false' }}">Kategori {{ $i }}</button>
-                        @endfor
-                    </div> -->
+          
                 <div class="row d-flex p-3" id="product-list">
                     @foreach ($products as $product)
                     <div class="col-lg-3 col-md-4 col-sm-6 card-product m-2" data-category="{{ $product->description }}" data-id="{{ $product->id }}" style="cursor: pointer;" data-price="{{ $product->price }}" data-qty="{{$product->quantity}}">
                         <div class="my-3 text-center">
                             <img src="{{ asset($product->image) }}" style="width: 50px;height: 50px; object-fit: cover; border-radius: 50%;" alt="{{ $product->name }}">
-                            <h5 class="mt-3 mb-0">Produk {{ $product->name }}</h5>
-                            <p class="mb-0 text-danger">
+                            <h7 class="mt-3 mb-0">Produk {{ $product->name }}</h7>
+                            <p class="mb-0 text-danger mt-3">
                                 {{ formatRupiah($product->price) }}
                             </p>
                             <span>
@@ -118,7 +111,7 @@
     $(document).ready(function() {
         $('.card-product').on('click', function() {
             const productPrice = parseFloat($(this).data('price'));
-            const productName = $(this).find('h5').text();
+            const productName = $(this).find('h7').text();
             const productId = $(this).data('id');
             const existingRow = $('#cart-items').find(`tr:contains(${productName})`);
             const stock = parseInt($(this).data('qty'));
@@ -230,7 +223,7 @@
         $('#search-product').on('input', function() {
             const query = $(this).val().toLowerCase();
             $('#product-list .card-product').each(function() {
-                const productName = $(this).find('h5').text().toLowerCase();
+                const productName = $(this).find('h7').text().toLowerCase();
                 $(this).toggle(productName.includes(query));
             });
         });
@@ -264,7 +257,7 @@
             const customerName = $('#customer-name').val();
             if (!customerName) {
                 Swal.fire({
-                    title: "Error!",
+                    title: "Ooops!",
                     text: "Nama pelanggan harus diisi!",
                     icon: "error"
                 });
@@ -274,7 +267,7 @@
             const paymentMethod = $('input[name="payment-method"]:checked').val();
             if (!paymentMethod) {
                 Swal.fire({
-                    title: "Error!",
+                    title: "Ooops!",
                     text: "Pilih metode pembayaran!",
                     icon: "error"
                 });
