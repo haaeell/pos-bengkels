@@ -27,18 +27,22 @@
                                 <td>{{ $supplier->email }}</td>
                                 <td>{{ $supplier->phone }}</td>
                                 <td>{{ $supplier->address }}</td>
-                                <td>
-                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $supplier->id }}">Edit</button>
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $supplier->id }}">Delete</button>
+                                <td class="d-flex">
+                                    <button class="btn btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#editModal{{ $supplier->id }}">Edit</button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal{{ $supplier->id }}">Delete</button>
                                 </td>
                             </tr>
 
-                            <div class="modal fade" id="editModal{{ $supplier->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="editModal{{ $supplier->id }}" tabindex="-1"
+                                aria-labelledby="editModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Edit Supplier</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <form action="{{ route('suppliers.update', $supplier->id) }}" method="POST">
@@ -46,15 +50,18 @@
                                                 @method('PUT')
                                                 <div class="mb-3">
                                                     <label class="form-label">Nama</label>
-                                                    <input type="text" class="form-control" name="name" value="{{ $supplier->name }}" required>
+                                                    <input type="text" class="form-control" name="name"
+                                                        value="{{ $supplier->name }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">Email</label>
-                                                    <input type="email" class="form-control" name="email" value="{{ $supplier->email }}">
+                                                    <input type="email" class="form-control" name="email"
+                                                        value="{{ $supplier->email }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">Telepon</label>
-                                                    <input type="text" class="form-control" name="phone" value="{{ $supplier->phone }}" required>
+                                                    <input type="text" class="form-control" name="phone"
+                                                        value="{{ $supplier->phone }}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">Alamat</label>
@@ -67,12 +74,14 @@
                                 </div>
                             </div>
 
-                            <div class="modal fade" id="deleteModal{{ $supplier->id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="deleteModal{{ $supplier->id }}" tabindex="-1"
+                                aria-labelledby="deleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Confirm Delete</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             Are you sure you want to delete this supplier?
@@ -83,7 +92,8 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">Yes, Delete</button>
                                             </form>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
                                         </div>
                                     </div>
                                 </div>

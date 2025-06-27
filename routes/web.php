@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\riwayatTransaksiController;
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
     Route::get('/transaksi-harian', [riwayatTransaksiController::class, 'dailyTransactions'])->name('transaksi.harian');
     Route::get('/transaksi-bulanan', [riwayatTransaksiController::class, 'monthlyTransactions'])->name('transaksi.bulanan');
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+
     Route::get('/sales', [riwayatTransaksiController::class, 'sales'])->name('penjualan');
 
     Route::resource('suppliers', SupplierController::class);

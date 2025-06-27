@@ -122,6 +122,12 @@
                                 <span class="hide-menu">Data Penjualan</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/laporan" aria-expanded="false">
+                                <iconify-icon icon="solar:danger-circle-line-duotone"></iconify-icon>
+                                <span class="hide-menu">Laporan</span>
+                            </a>
+                        </li>
                 </nav>
                 <!-- End Sidebar navigation -->
             </div>
@@ -168,7 +174,8 @@
                                             <p class="mb-0 fs-3">My Account</p>
                                         </a>
                                         <a href="./authentication-login.html"
-                                            class="btn btn-outline-primary mx-3 mt-2 d-block" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                            class="btn btn-outline-primary mx-3 mt-2 d-block"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
                                             @csrf

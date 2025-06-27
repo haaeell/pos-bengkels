@@ -31,7 +31,7 @@
                                 <td>{{ $product->satuan }}</td>
                                 {{-- <td>{{ $product->quantity }}</td> --}}
                                 <td>{{ formatRupiah($product->price) }}</td>
-                                <td>
+                                <td class="d-flex">
                                     <button class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#editModal{{ $product->id }}">Edit</button>
                                     <button class="btn btn-danger" data-bs-toggle="modal"
@@ -113,7 +113,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary mt-3 float-end">Update</button>
+                                                <button type="submit"
+                                                    class="btn btn-primary mt-3 float-end">Update</button>
                                             </form>
                                         </div>
                                     </div>
