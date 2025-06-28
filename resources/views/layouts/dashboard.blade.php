@@ -125,12 +125,11 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="/users" aria-expanded="false">
-                                <i class="bi bi-people"></i>
-                                <span class="hide-menu">Data Pengguna</span>
+                            <a class="sidebar-link" href="/laporan" aria-expanded="false">
+                                <iconify-icon icon="solar:danger-circle-line-duotone"></iconify-icon>
+                                <span class="hide-menu">Laporan</span>
                             </a>
                         </li>
-
                 </nav>
                 <!-- End Sidebar navigation -->
             </div>

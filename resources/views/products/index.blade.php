@@ -33,9 +33,8 @@
                                 <td><img src="{{ asset($product->image) }}" alt="" width="100px"></td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->satuan }}</td>
-                                <td class="text-center">{{ $product->quantity }}</td>
-                                <td class="text-nowrap">{{ formatRupiah($product->price) }}</td>
-                                 @if (Auth::user()->isAdmin())
+                                {{-- <td>{{ $product->quantity }}</td> --}}
+                                <td>{{ formatRupiah($product->price) }}</td>
                                 <td class="d-flex">
                                     <button class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#editModal{{ $product->id }}">Edit</button>
