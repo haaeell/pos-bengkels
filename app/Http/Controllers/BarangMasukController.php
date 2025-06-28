@@ -42,25 +42,45 @@ class BarangMasukController extends Controller
             'product_id' => 'required|exists:products,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'harga_satuan' => 'required|numeric',
-            'jumlah' => 'required|integer',
+            'jumlah' => 'required|integer|min:1',
             'tanggal' => 'required|date',
         ]);
 
         $barangMasuk = BarangMasuk::findOrFail($id);
+
+        if ($barangMasuk->product_id != $request->product_id) {
+            $oldProduct = $barangMasuk->product;
+            $oldProduct->quantity -= $barangMasuk->jumlah;
+            $oldProduct->save();
+
+            $newProduct = Product::findOrFail($request->product_id);
+            $newProduct->quantity += $request->jumlah;
+            $newProduct->save();
+        } else {
+            $product = $barangMasuk->product;
+            $stokAdjustment = $request->jumlah - $barangMasuk->jumlah;
+            $product->quantity += $stokAdjustment;
+            $product->save();
+        }
+
+        // Update data barang masuk
         $barangMasuk->update($request->all());
 
-        $product = Product::find($request->product_id);
-        $product->quantity += $request->jumlah;
-        $product->save();
-
-        return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk berhasil diperbarui!');
+        return redirect()->route('barang-masuk.index')->with('success', 'Barang masuk berhasil diperbarui dan stok disesuaikan.');
     }
+
 
     public function destroy($id)
     {
         $barangMasuk = BarangMasuk::findOrFail($id);
+
+        $product = $barangMasuk->product;
+
+        $product->quantity -= $barangMasuk->jumlah;
+        $product->save();
+
         $barangMasuk->delete();
 
-        return redirect()->route('barang-masuk.index')->with('success', 'Barang masuk berhasil dihapus!');
+        return redirect()->route('barang-masuk.index')->with('success', 'Barang masuk berhasil dihapus dan stok dikurangi.');
     }
 }

@@ -49,4 +49,8 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+    public function isOwner()
+    {
+        return $this->role === 'owner';
+    }
 }

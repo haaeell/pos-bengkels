@@ -7,7 +7,9 @@
                 <h4 class="card-title">Products</h4>
             </div>
             <div class="card-body">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Add Product</button>
+                @if (Auth::user()->isAdmin())
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Add Product</button>
+                @endif
                 <table class="table mt-3 table-hovered" id="datatables">
                     <thead>
                         <tr>
@@ -16,9 +18,11 @@
                             <th>Image</th>
                             <th>Name</th>
                             <th>Satuan</th>
-                            {{-- <th>Quantity</th> --}}
+                            <th>Stok</th>
                             <th>Price</th>
-                            <th>Actions</th>
+                            @if (Auth::user()->isAdmin())
+                                <th>Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -29,14 +33,16 @@
                                 <td><img src="{{ asset($product->image) }}" alt="" width="100px"></td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->satuan }}</td>
-                                {{-- <td>{{ $product->quantity }}</td> --}}
-                                <td>{{ formatRupiah($product->price) }}</td>
-                                <td>
+                                <td class="text-center">{{ $product->quantity }}</td>
+                                <td class="text-nowrap">{{ formatRupiah($product->price) }}</td>
+                                 @if (Auth::user()->isAdmin())
+                                <td class="d-flex">
                                     <button class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#editModal{{ $product->id }}">Edit</button>
                                     <button class="btn btn-danger" data-bs-toggle="modal"
                                         data-bs-target="#deleteModal{{ $product->id }}">Delete</button>
                                 </td>
+                                @endif
                             </tr>
 
                             <div class="modal fade" id="editModal{{ $product->id }}" tabindex="-1"
@@ -113,7 +119,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary mt-3 float-end">Update</button>
+                                                <button type="submit"
+                                                    class="btn btn-primary mt-3 float-end">Update</button>
                                             </form>
                                         </div>
                                     </div>

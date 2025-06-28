@@ -10,6 +10,8 @@
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 </head>
 
 <body>
@@ -41,7 +43,7 @@
                                 <span class="hide-menu">Dashboard</span>
                             </a>
                         </li>
-                        @if (Auth::user()->isAdmin())
+                        @if (Auth::user()->isAdmin() || Auth::user()->isOwner() )
                             <li>
                                 <span class="sidebar-divider lg"></span>
                             </li>
@@ -122,6 +124,13 @@
                                 <span class="hide-menu">Data Penjualan</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/users" aria-expanded="false">
+                                <i class="bi bi-people"></i>
+                                <span class="hide-menu">Data Pengguna</span>
+                            </a>
+                        </li>
+
                 </nav>
                 <!-- End Sidebar navigation -->
             </div>
@@ -168,7 +177,8 @@
                                             <p class="mb-0 fs-3">My Account</p>
                                         </a>
                                         <a href="./authentication-login.html"
-                                            class="btn btn-outline-primary mx-3 mt-2 d-block" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                            class="btn btn-outline-primary mx-3 mt-2 d-block"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
                                             @csrf

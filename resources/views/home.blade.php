@@ -48,23 +48,6 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5>Stok Hampir Habis</h5>
-                        <table class="table rounded">
-                            <thead class="table-danger">
-                                <tr>
-                                    <th>Nama Barang</th>
-                                    <th>Sisa Stok</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($stokHampirHabis as $product)
-                                    <tr>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->quantity }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
 
                         @if ($stokHampirHabis->count() > 0)
                             <div class="alert alert-warning mt-3" role="alert">
@@ -75,6 +58,23 @@
                                 ✅ Semua stok dalam kondisi aman. Tidak ada barang yang hampir habis.
                             </div>
                         @endif
+                        <h5>Stok Hampir Habis</h5>
+                        <table class="table rounded" id="datatables">
+                            <thead class="table-danger">
+                                <tr>
+                                    <th>Nama Barang</th>
+                                    <th class="text-nowrap">Sisa Stok</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($stokHampirHabis as $product)
+                                    <tr>
+                                        <td>{{ $product->name }}</td>
+                                        <td class="text-center">{{ $product->quantity }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
